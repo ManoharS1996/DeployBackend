@@ -2,27 +2,26 @@ version: '3'
 
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
     ports:
       - "80:80"
     depends_on:
       - backend
 
   backend:
-    build: ./backend
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017/mydatabase
+    build:
+      context: ./backend
     ports:
       - "5000:5000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017/mydb
     depends_on:
-      - mongodb
+      - mongo
 
-  mongodb:
+  mongo:
     image: mongo:latest
+    volumes:
+      - ./data/db:/data/db
     ports:
       - "27017:27017"
-    volumes:
-      - mongo-data:/data/db
-
-volumes:
-  mongo-data:
